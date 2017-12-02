@@ -9,44 +9,59 @@ import (
 )
 
 func main() {
+	vals := readCsv()
+	// fmt.Printf("Day 2 checksum 1: %d\n", substractor(vals))
+	fmt.Printf("Day 2 checksum 2: %d\n", divisor(vals))
+}
 
+func readCsv() [][]int {
 	dat, _ := ioutil.ReadFile("./input.csv")
 	s := string(dat[:])
 
 	lines := strings.Split(s, "\n")
 
-	fmt.Printf("Day 2 checksum 1: %d\n", Substractor(lines))
-	fmt.Printf("Day 2 checksum 2: %d\n", Divisor(lines))
+	vals := make([][]int, len(lines))
+
+	for l := 0; l < len(lines); l++ {
+		valStrings := strings.Split(lines[l], "\t")
+		line := make([]int, len(valStrings))
+		for i := range valStrings {
+			line[i], _ = strconv.Atoi(valStrings[i])
+		}
+		vals[l] = line
+	}
+	return vals
 }
 
-func Substractor(lines []string) int {
+func substractor(lines [][]int) int {
 	sum := 0
-	for _, l := range lines {
-		valStrings := strings.Split(l, "\t")
-		vals := make([]int, len(valStrings))
-		for i := range valStrings {
-			vals[i], _ = strconv.Atoi(valStrings[i])
+	for l := 0; l < len(lines); l++ {
+		min := 999999999
+		max := 0
+		lineData := lines[l]
+		for c := 0; c < len(lineData); c++ {
+			if min > lineData[c] {
+				min = lineData[c]
+			}
+			if max < lineData[c] {
+				max = lineData[c]
+			}
 		}
-		sort.Ints(vals)
-		sum += vals[len(vals)-1] - vals[0]
+		sum += max - min
 	}
 	return sum
 }
 
-func Divisor(lines []string) int {
+func divisor(lines [][]int) int {
 	sum := 0
 	for l := 0; l < len(lines); l++ {
-		valStrings := strings.Split(lines[l], "\t")
-		vals := make([]int, len(valStrings))
-		for i := range valStrings {
-			vals[i], _ = strconv.Atoi(valStrings[i])
-		}
-		sort.Ints(vals)
+		lineData := lines[l]
+		sort.Ints(lineData)
 		found := false
-		for i := 0; i < len(vals) && !found; i++ {
-			for j := len(vals) - 1; j > i && !found; j-- {
-				if vals[j]%vals[i] == 0 {
-					sum += vals[j] / vals[i]
+		for i := 0; i < len(lineData) && !found; i++ {
+			for j := len(lineData) - 1; j > i && !found; j-- {
+				if lineData[j]%lineData[i] == 0 {
+					sum += lineData[j] / lineData[i]
 					found = true
 				}
 			}
