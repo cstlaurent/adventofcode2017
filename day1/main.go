@@ -14,7 +14,7 @@ func main() {
 
 func calculateSum(offset int) int {
 	sum := 0
-	for i := range input {
+	for i := 0; i < len(input); i++ {
 		i1 := int(input[i%len(input)] - '0')
 		i2 := int(input[(i+offset)%len(input)] - '0')
 		if i1 == i2 {
