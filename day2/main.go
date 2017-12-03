@@ -10,7 +10,7 @@ import (
 
 func main() {
 	vals := readCsv()
-	// fmt.Printf("Day 2 checksum 1: %d\n", substractor(vals))
+	fmt.Printf("Day 2 checksum 1: %d\n", substractor(vals))
 	fmt.Printf("Day 2 checksum 2: %d\n", divisor(vals))
 }
 
